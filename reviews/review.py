@@ -1,5 +1,5 @@
 
-from . import db
+import db
 
 def set(id, review):
 	if 1 > review or review > 5:

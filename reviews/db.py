@@ -3,19 +3,18 @@
 from flask import g, current_app
 from flask.cli import with_appcontext
 import mysql.connector
-import psycopg2
 import click
 
-DB_HOST="127.0.0.1"
-DB_USER="root"
+DB_HOST="mysql"
+DB_USER="exerian"
 DB_PSWRD="root"
-DB_DATABASE="meal_db"
+DB_DATABASE="reviews_db"
 
 def get_db(main_db=DB_DATABASE, active_db=True):
 	if not active_db:
 			main_db = ""
 	if not hasattr(g, '_database'):
-		g._database = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PSWRD, database=main_db)
+		g._database = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PSWRD)
 	return g._database
 
 def teardown_db(error):
@@ -32,7 +31,7 @@ def init_db():
 			for statement in statements.split(';'):
 				cursor.execute(statement)
 		db.commit()
-	except dbb.mysql.connector.Error as err:
+	except mysql.connector.Error as err:
 		print(f"Error_testDBbuild: {err}")
 	finally:
 		cursor.close()

@@ -1,6 +1,4 @@
 Flask
-SQLAlchemy
-psycopg2
 mysql-connector
 click
 flask-CLI

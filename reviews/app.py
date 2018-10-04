@@ -1,16 +1,11 @@
-import os
+import os, click
 
 from flask import Flask
 
 test_config = None
 
 app = Flask(__name__, instance_relative_config=True)
-app.config.from_mapping(SECRET_KEY='dev',
-	DB_HOST = '127.0.0.1',
-	DB_USER = 'root',
-	DB_PSWRD = 'root',
-	DB_DATABASE='meal_db',
-	)
+app.config.from_mapping(SECRET_KEY='dev')
 
 if test_config is None:
 	app.config.from_pyfile('config.py', silent=True)
@@ -25,11 +20,11 @@ except OSError:
 def hello():
 	return 'Hello, World!'
 
-from reviews import db
+import db
 db.init_app(app)
 
-from reviews import api
+import api
 app.register_blueprint(api.bp)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=80, debug=True)

@@ -1,9 +1,15 @@
 from flask import (
 	Flask, g, jsonify, make_response, request, abort, Blueprint
 )
-from . import review, db
+import review, db
 
 bp = Blueprint('api',__name__,url_prefix='/api/1.0')
+
+@bp.route('/test', methods=['GET'])
+def test():
+	dbb = db.get_db()
+	print(f"TEST: {dbb}")
+	return jsonify({'test': "Success!"})
 
 @bp.route('/reviews/<string:meal_id>', methods=['GET'])
 def get_review(meal_id):
@@ -17,7 +23,7 @@ def get_review(meal_id):
 
 @bp.route('/reviews', methods=['GET'])
 def get_reviews():
-   return jsonify({'reviews': reviews})
+   return jsonify({'reviews': 'N/A'})
 
 @bp.route('/reviews/', methods=['PATCH'])
 def set_review():
@@ -39,4 +45,8 @@ def remove_review(meal_id):
 # Error handling:
 @bp.errorhandler(404)
 def not_found(error):
-	return make_response(jsonify({'error': "Not found"}), 404)
+	return make_response(jsonify({'error': {
+		'code': 404,
+		'message': "Some message.",
+		'type': "The type of error."
+	}}), 404)
