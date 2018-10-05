@@ -6,8 +6,8 @@ import mysql.connector
 import click
 
 DB_HOST="mysql"
-DB_USER="exerian"
-DB_PSWRD="root"
+DB_USER="somerandomuser"
+DB_PSWRD="somerandompassword"
 DB_DATABASE="reviews_db"
 
 def get_db(main_db=DB_DATABASE, active_db=True):
