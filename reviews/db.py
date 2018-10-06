@@ -5,7 +5,6 @@ from flask.cli import with_appcontext
 import mysql.connector
 import click
 
-DB_HOST="mysql"
 DB_USER="somerandomuser"
 DB_PSWRD="somerandompassword"
 DB_DATABASE="reviews_db"
@@ -14,7 +13,7 @@ def get_db(main_db=DB_DATABASE, active_db=True):
 	if not active_db:
 			main_db = ""
 	if not hasattr(g, '_database'):
-		g._database = mysql.connector.connect(host=DB_HOST, user=DB_USER, password=DB_PSWRD)
+		g._database = mysql.connector.connect(host='mysql', user=DB_USER, password=DB_PSWRD)
 	return g._database
 
 def teardown_db(error):
