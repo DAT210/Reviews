@@ -14,6 +14,8 @@ def test():
 @bp.route('/reviews/<string:meal_id>', methods=['GET'])
 def get_review(meal_id):
 	r = review.get(meal_id)
+	if r is None:
+		abort(400)
 	x = {
 		'id': meal_id,
 		'review': r,
@@ -50,3 +52,13 @@ def not_found(error):
 		'message': "Some message.",
 		'type': "The type of error."
 	}}), 404)
+
+@bp.errorhandler(400)
+def none_type(error):
+	return make_response(jsonify({
+		'error': {
+			'code': 400,
+			'message': "The specified id does not exist.",
+			'type': "MEH"
+		}
+	}))
