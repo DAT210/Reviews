@@ -59,6 +59,9 @@ def build_app():
 		build_db()
 
 def build_db():
+	dbb.DB_HOST="localhost"
+	dbb.DB_USER="root"
+	dbb.DB_PSWRD="root"
 	db = dbb.get_db()
 	cursor = db.cursor()
 	try:
@@ -72,8 +75,6 @@ def build_db():
 	finally:
 		cursor.close()
 	dbb.DB_DATABASE = "meal_testdb"
-	dbb.DB_USER="root"
-	dbb.DB_PSWRD="root"
 
 class TestGet(unittest.TestCase):
 	initialized = False
