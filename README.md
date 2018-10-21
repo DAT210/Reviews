@@ -1,3 +1,7 @@
 # Reviews
-Reviews - Group 3
-# Me
+Welcome to the Reviews API by Group 3.
+
+## Table of Contents:
+1. Hello
+2. World
+3. More
