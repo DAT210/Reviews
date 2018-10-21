@@ -71,10 +71,10 @@ The POST method of the API request is used for adding a new ID. The request must
 {
   'meal_id': [
     <id_1>,
-		<id_2>,
-		<id_3>,
-		...,
-		<id_n>
+    <id_2>,
+    <id_3>,
+    ...,
+    <id_n>
   ]
 }
 ```
