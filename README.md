@@ -69,7 +69,7 @@ Where \<ID\> is the ID of the object one wants the rating of. This will return a
 The POST method of the API request is used for adding a new ID. The request must contain a json in the following format:
 ```
 {
-  'meal_id': [
+  'data': [
     <id_1>,
     <id_2>,
     <id_3>,
