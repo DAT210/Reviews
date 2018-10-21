@@ -78,7 +78,7 @@ The POST method of the API request is used for adding a new ID. The request must
   ]
 }
 ```
-Where the ```'meal_id'``` field contains an array of ID's to be added, if one fail none will be added.\
+Where the ```'data'``` field contains an array of ID's to be added, if one fail none will be added.\
 Returns the following json format on success:
 ```
 {
