@@ -6,14 +6,12 @@ from reviews.db import (
 def set(id, rating):
 	db = get_db()
 	cursor = db.cursor()
-	set_check = 0
-	error = None
 	try:
 		sql = "SELECT score, nr_of_ratings FROM reviews_db.review_meals WHERE meal_id=%s"
 		cursor.execute(sql, (id,))
 		fetch = cursor.fetchone()
 		if fetch is None:
-			return 0, "The id does not exist."
+			return
 		(score, nr_of_ratings) = fetch
 		score += rating
 		nr_of_ratings += 1
@@ -21,20 +19,13 @@ def set(id, rating):
 		sql = "UPDATE reviews_db.review_meals SET rating=%s, score=%s, nr_of_ratings=%s WHERE meal_id=%s"
 		cursor.execute(sql, (rating, score, nr_of_ratings, id,))
 		set_check = cursor.rowcount
-		database.commit()
-		return set_check, None
+		db.commit()
+		return set_check
 	except mysql.connector.Error as err:
-		print(f"Error_set: {err}")
-		error = {
-			'error': {
-				'code': err.errno,
-				'msg': err.msg,
-				'type': err.sqlstate
-			}
-		}
+		print(str(err))
 	finally:
 		cursor.close()
-	return set_check, error
+	return
 
 def get(id):
 	db = get_db()
@@ -73,7 +64,7 @@ def remove(id):
 		sql = "DELETE FROM reviews_db.review_meals WHERE meal_id=%s"
 		cursor.execute(sql, (id,))
 		delete_check = cursor.rowcount
-		database.commit()
+		db.commit()
 		return delete_check
 	except mysql.connector.Error as err:
 		print(f"Error_remove: {err}")
@@ -85,17 +76,16 @@ def remove(id):
 def add(meal_ids):
 	db = get_db()
 	cursor = db.cursor()
-	errors = []
 	insert_check = 0
 	try:
-		sql = "INSERT INTO reviews_db.review_meals (meal_id, rating, score, nr_of_ratings) VALUES (%s, 0, 0, 0);"
+		sql = "INSERT INTO reviews_db.review_meals (meal_id) VALUES (%s);"
 		for meal_id in meal_ids:
 			cursor.execute(sql, (meal_id,))
 			insert_check += cursor.rowcount
-		database.commit()
+		db.commit()
 	except mysql.connector.Error as err:
 		print(f"Error_add: {err}")
-		errors.append(err)
+		return err
 	finally:
 		cursor.close()
-	return insert_check, errors
+	return insert_check

@@ -63,15 +63,15 @@ def set_review():
 	if not request.is_json:
 		raise APIError("The request must be in json format.", status_code=400, type='Bad Request')
 	if not 'data' in request.get_json():
-		raise APIError("The json request is not correctly formatted, \
-		missing 'data', see the documentation.", status_code=400, type='Bad Request')
+		raise APIError("The json request is not correctly formatted,"
+			+ "missing 'data', see the documentation.", status_code=400, type='Bad Request')
 	id_dict = request.get_json()['data']
 	(meal_id, rating,) = id_dict.values()
-	if not isinstance(meal_review, int):
+	if not isinstance(rating, int):
 		raise APIError("The rating must be an integer.", status_code=400, type='Bad Request')
-	check, error = review.set(meal_id, rating)
-	if check is 0 or None:
-		raise APIError("SET_REVIEW")
+	check = review.set(meal_id, rating)
+	if check is None:
+		raise APIError(f"The ID '{meal_id}' does not exist.", status_code=404, type='Not Found')
 	reply = {
 		'status': 'success',
 		'data': None
@@ -80,11 +80,14 @@ def set_review():
 
 @bp.route('/reviews/', methods=['POST'])
 def add_review():
-	if not request.is_json or not 'meal_id' in request.get_json():
-		raise APIError("ADD_REVIEW", status_code=400, type='Bad Request')
-	check, e = review.add(request.get_json()['meal_id'])
-	if check is 0 or None:
-		raise APIError(str(e), status_code=409, type='Conflict')
+	if not request.is_json:
+		raise APIError("The request must be in json format.", status_code=400, type='Bad Request')
+	if not 'data' in request.get_json():
+		raise APIError("The json request is missing 'data', " +
+			"read the documentation for the correct format.", status_code=400, type='Bad Request')
+	check = review.add(request.get_json()['meal_id'])
+	if isinstance(check, Exception):
+		raise APIError(str(check), status_code=409, type='Conflict')
 	reply = {
 		'status': 'success',
 		'data': None
@@ -93,9 +96,11 @@ def add_review():
 
 @bp.route('/reviews/<string:meal_id>/', methods=['DELETE'])
 def remove_review(meal_id):
-	okay = review.remove(meal_id)
-	if okay is 0 or None:
-		raise APIError("REMOVE_REVIEW", status_code=404, type='Not Found')
+	check = review.remove(meal_id)
+	if isinstance(check, Exception):
+		raise APIError(str(check), status_code=404, type='Not Found')
+	elif check is 0:
+		raise APIError(f"The ID '{meal_id}' could not be found.", status_code=404, type='Not Found')
 	reply = {
 		'status': "success",
 		'data': None
@@ -105,8 +110,4 @@ def remove_review(meal_id):
 # Error handling:
 @bp.errorhandler(APIError)
 def handle_APIError(error):
-	reply = {
-		'status': 'error',
-		'data': error.json()
-	}
-	return make_response(jsonify(reply))
+	return make_response(error.json()), error.code()

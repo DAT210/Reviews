@@ -1,26 +1,31 @@
-CREATE DATABASE IF NOT EXISTS meal_testdb /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+CREATE DATABASE IF NOT EXISTS reviews_test /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
 
-USE meal_testdb;
+USE reviews_test;
 
-CREATE TABLE IF NOT EXISTS reviews_meal (
-  meal_id varchar(10) NOT NULL,
-  review double unsigned NOT NULL,
-  score int(10) unsigned NOT NULL,
-  nr_of_reviews int(10) unsigned NOT NULL,
+CREATE TABLE review_meals (
+  meal_id varchar(16) NOT NULL,
+  rating double unsigned DEFAULT 0,
+  score int(10) unsigned DEFAULT 0,
+  nr_of_1_ratings int(10) unsigned DEFAULT 0,
+  nr_of_2_ratings int(10) unsigned DEFAULT 0,
+  nr_of_3_ratings int(10) unsigned DEFAULT 0,
+  nr_of_4_ratings int(10) unsigned DEFAULT 0,
+  nr_of_5_ratings int(10) unsigned DEFAULT 0,
+  nr_of_ratings int(10) unsigned DEFAULT 0,
   PRIMARY KEY (meal_id),
   UNIQUE KEY meal_id_UNIQUE (meal_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-TRUNCATE reviews_meal;
+TRUNCATE review_meals;
 
-INSERT INTO reviews_meal (meal_id, review, score, nr_of_reviews) VALUES 
-  ('m_fs0214', 0, 0, 0),
-  ('m_fs0203', 0, 0, 0),
-  ('m_fs0205', 0, 0, 0),
-  ('m_fs0208', 0, 0, 0),
-  ('m_fs0213', 0, 0, 0),
-  ('m_fs0221', 0, 0, 0),
-  ('m_fs0234', 0, 0, 0),
-  ('m_fs02m2', 0, 0, 0),
-  ('m_fs02m3', 0, 0 ,0),
-  ('m_fs02m4', 0, 0, 0);
+INSERT INTO review_meals (meal_id) VALUES 
+  ('get_test_1'),
+  ('get_test_2'),
+  ('set_test_1'),
+  ('set_test_2'),
+  ('m_fs0213'),
+  ('m_fs0221'),
+  ('m_fs0234'),
+  ('m_fs02m2'),
+  ('m_fs02m3'),
+  ('m_fs02m4');
