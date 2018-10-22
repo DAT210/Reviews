@@ -107,7 +107,7 @@ To access or send data through the Reviews API one could make calls in the forma
 ```
 	http://<host>/api/1.0/reviews/
 ```
-Where _<host>_ is the host address of the API server. e.g. ``` localhost:3000 ``` or ``` 192.168.99.100:3000 ```.
+Where _\<host\>_ is the host address of the API server. e.g. ``` localhost:3000 ``` or ``` 192.168.99.100:3000 ```.
 
 #### API GET:
 The GET method of the API request could return two different results depending on the format of the call.
@@ -133,7 +133,7 @@ The specific format will only get the rating of a specified ID, and to do this t
 ```
 	http://<host>/api/1.0/reviews/<ID>/
 ```
-Where \<ID\> is the ID of the object one wants the rating of. This will return a json in the following format:
+Where _\<ID\>_ is the ID of the object one wants the rating of. This will return a json in the following format:
 
 ```
 {
