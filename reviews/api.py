@@ -81,7 +81,8 @@ def set_review():
 		meal_id = data.pop('id')
 		rating = data.pop('rating')
 	except KeyError as err:
-		raise APIError(str(err), status_code=400, type='Bad Request')
+		raise APIError(f"The key {err} could not be found, check documentation for correct request format."
+			, status_code=400, type='Bad Request')
 
 	if not isinstance(rating, int):
 		raise APIError("The rating must be an integer.", status_code=400, type='Bad Request')
@@ -111,7 +112,7 @@ def add_review():
 		raise APIError("The json request is missing 'data', " +
 			"read the documentation for the correct format.", status_code=400, type='Bad Request')
 
-	check = review.add(request.get_json()['meal_id'])
+	check = review.add(request.get_json()['data'])
 	if isinstance(check, Exception):
 		raise APIError(str(check), status_code=409, type='Conflict')
 

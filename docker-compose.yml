@@ -23,9 +23,8 @@ services:
       dockerfile: Dockerfile-db
     command: --default-authentication-plugin=mysql_native_password
     environment:
-      - MYSQL_DATABASE=reviews_db
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_USER=somerandomuser
-      - MYSQL_PASSWORD=somerandompassword
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PSWRD}
     ports:
       - 3306:3306
