@@ -104,9 +104,9 @@ This will build a Python and a MySQL image and run them in two different contain
 The Reviews API can be reached by sending various request methods to the host of the API server.
 To access or send data through the Reviews API one could make calls in the format:
 ```
-	http://host/api/1.0/reviews/
+	http://<host>/api/1.0/reviews/
 ```
-Where 'host' is the host address of the API server.
+Where _<host>_ is the host address of the API server. e.g. ``` localhost:3000 ``` or ``` 192.168.99.100:3000 ```.
 
 #### API GET:
 The GET method of the API request could return two different results depending on the format of the call.
@@ -130,7 +130,7 @@ If the request was successful the ```'status'``` field of the json reply will be
 ###### Specific:
 The specific format will only get the rating of a specified ID, and to do this the following call is made with a GET method:
 ```
-	http://host/api/1.0/reviews/<ID>/
+	http://<host>/api/1.0/reviews/<ID>/
 ```
 Where \<ID\> is the ID of the object one wants the rating of. This will return a json in the following format:
 
@@ -179,7 +179,7 @@ The PATCH method of the API request is used for updating the rating of an ID. Th
   }
 }
 ```
-Where \<id_of_the_object\> is the ID of the object being updated, and \<rating_of_the_object\> is the rating being set. Be aware that the rating must be an integer.\
+Where _\<id_of_the_object\>_ is the ID of the object being updated, and _\<rating_of_the_object\>_ is the rating being set. Be aware that the rating must be an integer.\
 On a successful execution the following json format will be returned:
 ```
 {
@@ -191,9 +191,9 @@ On a successful execution the following json format will be returned:
 #### API DELETE:
 The DELETE method of the API request is used for removing an object and it's rating. It has the same call format as the [specific](#specific) GET call, but with a DELETE method:
 ```
-	http://host/api/1.0/reviews/<ID>/
+	http://<host>/api/1.0/reviews/<ID>/
 ```
-Where \<ID\> is the ID of the object being removed.\
+Where _\<ID\>_ is the ID of the object being removed.\
 On a successful execution the following json format will be returned:
 ```
 {
