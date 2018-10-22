@@ -27,6 +27,7 @@ def set(id, rating):
 		cursor.close()
 	return
 
+
 def get(id):
 	db = get_db()
 	cursor = db.cursor()
@@ -44,6 +45,7 @@ def get(id):
 		cursor.close()
 	return
 
+
 def pull():
 	db = get_db()
 	cursor = db.cursor()
@@ -56,6 +58,7 @@ def pull():
 	finally:
 		cursor.close()
 	return
+
 
 def remove(id):
 	db = get_db()
@@ -72,6 +75,7 @@ def remove(id):
 	finally:
 		cursor.close()
 	return
+
 
 def add(meal_ids):
 	db = get_db()

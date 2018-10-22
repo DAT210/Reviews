@@ -32,6 +32,7 @@ def create_app(test_config=None, mode='dev'):
 
 	from reviews import db
 	app.teardown_appcontext(db.teardown_db)
+	app.cli.add_command(db.build_db)
 
 	from reviews import api
 	app.register_blueprint(api.bp)
