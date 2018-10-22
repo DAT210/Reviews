@@ -72,17 +72,18 @@ import os; print(os.urandom(16));
 Which will print a byte string, copy that and replace _<A_BYTE_STRING>_ with it, example: _b'\x8f'_.
 
 #### Run Flask App:
-To run the service locally on ones own computer one has to set a couple of environmentals, and have MySQL installed on the machine. To set the required environmentals on Windows, open the command line and write the following:
+To run the service locally on ones own computer one has to set a couple of environmentals, and have MySQL installed on the machine. **Be aware that this is for development only!** To set the required environmentals on Windows, open the command line and write the following:
 ```
-set FLASK_APP=reviews
+set FLASK_APP=reviews:create_app({'DB_CONFIG':{'host':'localhost','user':'root','pswrd':'root','db':'reviews_db','port':3306}})
 set FLASK_ENV=development
 ```
 For UNIX and MacOS the following commands are used:
 ```
-export FLASK_APP=reviews
+export FLASK_APP=reviews:create_app({'DB_CONFIG':{'host':'localhost','user':'root','pswrd':'root','db':'reviews_db','port':3306}})
 export FLASK_ENV=development
 ```
-Afterwards to have the database initialized the following command must be run in python:
+The values of _host_, _user_, _pswrd_, _db_, and _port_ may be changed if other values are required or desired.\
+To have the database initialized the following command must be run in python:
 ```
 flask init-db --user <user> --pswrd <password> --host <host>
 ```
