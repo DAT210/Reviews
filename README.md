@@ -48,6 +48,7 @@ The structure of the repository will look almost like this:
 	Dockerfiles...
 	requirements.txt
 	setup.py
+	.env <-- must be added
 	instance/ <-- must be added
 		config.py <-- must be added
 ```
@@ -70,6 +71,14 @@ Where _<DB_USER_TO_BE_USED>_ is the username the API uses to connect to the MySQ
 import os; print(os.urandom(16));
 ```
 Which will print a byte string, copy that and replace _<A_BYTE_STRING>_ with it, example: _b'\x8f'_.
+The _.env_ file contains environmental variables for the _docker-compose.yml_ and is easy to add and write the following lines:
+```
+# Database set-up:
+DB_DATABASE=reviews_db
+DB_USER=<db_user_to_be_used>
+DB_PSWRD=<db_password_to_be_used>
+```
+Just replace _<db_user_to_be_used>_ and _<db_password_to_be_used>_ with the same values used in the _config.py_ file.
 
 #### Run Flask App:
 To run the service locally on ones own computer one has to set a couple of environmentals, and have MySQL installed on the machine. **Be aware that this is for development only!** To set the required environmentals on Windows, open the command line and write the following:
