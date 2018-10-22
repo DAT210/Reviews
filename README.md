@@ -3,8 +3,9 @@ Welcome to the Reviews API by Group 3.
 
 ## Table of Contents:
 1. [Introduction](#introduction)
-2. [Setup](#setup)
-	* [Build Repository and add Config](#build-repository-and-add-config)
+2. [Setup and Run](#setup-and-run)
+	* [Build Repository](#build-repository)
+	* [Add Config](#add-config)
 	* [Run Flask App](#run-flask-app)
 	* [Run in Docker](#run-in-docker)
 3. [API Uses](#api-uses)
@@ -19,15 +20,18 @@ Welcome to the Reviews API by Group 3.
 
 ## Introduction:
 
-## Setup:
+## Setup and Run:
 The API can be run both locally and in a docker container, though locally requires MySQL installed. It also requires a couple of files which must be manually added for security reasons, like a python configuration file called config.py and an environmental file with secrets.
 
-#### Build Repository and add Config:
+#### Build Repository:
 First of all the repository must be cloned, this can be achived by moving into a workspace with command line and use the following command with git installed:
 ```git
 git clone https://github.com/DAT210/Reviews.git
 ```
-When the repository is successfully cloned it's time to add a couple of configuration files. The structure of the repository will look almost like this:
+When the repository is successfully cloned it's time to add a couple of configuration files. 
+
+#### Add Config:
+The structure of the repository will look almost like this:
 ```
 /Reviews/
 	reviews/
@@ -47,7 +51,7 @@ When the repository is successfully cloned it's time to add a couple of configur
 	instance/ <-- must be added
 		config.py <-- must be added
 ```
-As one could see the *instance* folder with its content is missing, but could be added manually or else it will be added if one starts the API server.\
+As one can see the *instance* folder with its content is missing, but could be added manually or else it will be added if one starts the API server.\
 The _config.py_ file has the following structure:
 ```
 APP_NAME = 'Review API'
