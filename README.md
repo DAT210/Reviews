@@ -17,6 +17,46 @@ Welcome to the Reviews API by Group 3.
 ## Introduction:
 
 ## Setup:
+The API can be run both locally and in a docker container, though locally requires MySQL installed. It also requires a couple of files which must be manually added for security reasons, like a python configuration file called config.py and an environmental file with secrets.
+
+First of all the repository must be cloned, this can be achived by moving into a workspace with command line and use the following command with git installed:
+```git
+git clone https://github.com/DAT210/Reviews.git
+```
+When the repository is successfully cloned it's time to add a couple of configuration files. The structure of the repository will look almost like this:
+```
+/Reviews/
+	reviews/
+		__init__.py
+		api.py
+		app.py
+		review.py
+		db.py
+		exceptions.py
+	test/
+		some test files...
+	db/
+		init.sql
+	Dockerfiles...
+	requirements.txt
+	setup.py
+	instance/ <-- must be added
+		config.py <-- must be added
+```
+As one could see the *instance* folder with its content is missing, but could be added manually or else it will be added if one starts the API server.\
+The _config.py_ file has the following structure:
+```
+APP_NAME = 'Review API'
+DB_CONFIG = {
+    'host': 'mysql',
+    'port': 3306,
+    'db': 'reviews_db',
+    'user': <DB_USER_TO_BE_USED>,
+    'pswrd': <DB_USER_PASSWORD_TO_BE_USED>
+}
+DEBUG = False
+SECRET_KEY = <A_BYTE_STRING>
+```
 
 ## API Uses:
 The Reviews API can be reached by sending various request methods to the host of the API server.
