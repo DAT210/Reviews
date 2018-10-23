@@ -52,7 +52,7 @@ The structure of the repository will look almost like this:
 	instance/ <-- must be added
 		config.py <-- must be added
 ```
-As one can see the *instance* folder with its content is missing, but could be added manually or else it will be added if one starts the API server.\
+As one can see the *instance* folder with its content is missing, the folder will be automatically created the first time one starts the API, but the _config.py_ file must be added manually.
 The _config.py_ file has the following structure:
 ```python
 APP_NAME = 'Review API'
