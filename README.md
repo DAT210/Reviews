@@ -133,12 +133,13 @@ The standard format will pull all available reviews from the server in the follo
     'reviews':[{
       'id': <id_of_the_object>(str),
       'rating': <rating_of_the_object>(float),
-      'description': <description>(str)
+      'description': <description>(str),
+      'comments': []
     }]
   }
 }
 ```
-If the request was successful the ```'status'``` field of the json reply will be 'success', and the ```'reviews'``` field will contain an array of smaller jsons which contains the ID of the object as a string, the rating of the object as a float, and a description of the object as a string.
+If the request was successful the ```'status'``` field of the json reply will be 'success', and the ```'reviews'``` field will contain an array of smaller jsons which contains the ID of the object as a string, the rating of the object as a float, and a description of the object as a string. It will also contain an array of comments if one or more is found, or else will be ```null```.
 
 ###### Specific:
 The specific format will only get the rating of a specified ID, and to do this the following call is made with a GET method:
@@ -154,11 +155,13 @@ Where _\<ID\>_ is the ID of the object one wants the rating of. This will return
     'review': {
       'id': <id_of_the_object>(str),
       'rating': <rating_of_the_object>(float),
-      'description': <description>(str)
+      'description': <description>(str),
+      'comments': []
     }
   }
 }
 ```
+Like the standard the _comments_ field will contain an array if comments if found, or will elsewise be ```null```.
 
 #### API POST:
 The POST method of the API request is used for adding a new ID, on a successful request the API will return a HTTP status code of 201. The request must contain a json in the following format:
