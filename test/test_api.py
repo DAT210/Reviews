@@ -64,7 +64,7 @@ class TestApi(unittest.TestCase):
 				print(f"Test database initialized!")
 
 	def test_get_test(self):
-		respons = self.client.get("http://localhost:3000/api/1.0/test/")
+		respons = self.client.get("/api/1.0/test/")
 		self.assertEqual((respons.get_json(), respons.status_code), ({
 			'status': "Success",
 			'data': {

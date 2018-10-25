@@ -8,6 +8,7 @@ import click
 from flask.cli import with_appcontext
 import mysql.connector
 
+
 def get_db():
 	"""Makes an unique connection for each context to the database of the application,\
 	reuses it if it's called again."""
@@ -30,6 +31,7 @@ def teardown_db(error):
 	db = getattr(g, '_database', None)
 	if db is not None:
 		db.close()
+
 
 @click.command('init-db')
 @click.option('--host', default='localhost', help="The host address of the database, default=localhost")
