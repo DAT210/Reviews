@@ -2,3 +2,5 @@ Flask
 mysql-connector
 click
 flask-CLI
+requests
+Flask-WTF
