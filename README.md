@@ -163,7 +163,7 @@ Where _\<ID\>_ is the ID of the object one wants the rating of. This will return
 ```
 Like the standard the _comments_ field will contain an array if comments are found, elsewise it will be ```null```.
 The comments can be ordered by newest and oldest, specify an offset to start at, and the number of comment using the url keys: _sort_, _offset_, and _limit_. Each of the keys have a default value which will be used if none is given, or if wrong type is given. For _sort_ it is ```DESC```, which means descending (newest first); for _offset_ it's ```0```, which means it starts at the first value found; and for _limit_ it's ```10```, which gives the ten first comments found from the offset. The _offset_ and _limit_ keys only take integers, if anything else is given it will use the default value, while _sort_ only takes ```ASC``` or ```DESC``` strings, ```DESC``` will be used if anything else is given.\
-Adding a key to the url is simple, just type ```?key=value``` following _\<ID\>_, and to add multiple keys add a _&_ like: ```?key=value&key2=value2&key3=value3```. For example:
+Adding a key to the url is simple, just type ```?key=value``` following the _\<ID\>_, and to add multiple keys add a _&_ like: ```?key=value&key2=value2&key3=value3```. For example:
 ```
 http://<host>/api/1.0/reviews/<ID>?sort=ASC&offset=4&limit=14
 ```
