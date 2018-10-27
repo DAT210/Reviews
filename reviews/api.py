@@ -26,14 +26,19 @@ def test():
 
 
 @bp.route('/reviews/<string:meal_id>/', methods=['GET'])
+@bp.route('/reviews/<string:meal_id>', methods=['GET'])
 def get_review(meal_id):
+	limit = request.args.get('limit', default=10, type=int)
+	sort = request.args.get('sort', default='DESC', type=str)
+	offset = request.args.get('offset', default=0, type=int)
+
 	rating = Rating.get(meal_id)
 	if rating is None:
 		raise APIError(f"The rating for id '{meal_id}' could not be found", status_code=404, type='Not Found')
 	elif rating is isinstance(rating, Exception):
 		raise APIError(str(rating), status_code=400)
 
-	comments = Comment.get(meal_id)
+	comments = Comment.get(meal_id, sort=sort, offset=offset, limit=limit)
 	if comments is None or isinstance(comments, Exception):
 		comments_reply = None
 	else:

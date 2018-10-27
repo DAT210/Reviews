@@ -107,8 +107,7 @@ class Comment():
 		db = get_db()
 		cursor = db.cursor()
 		try:
-			sql = "INSERT INTO reviews_db.review_comments (comment_id, meal_id, rating, comment) VALUES (%s, %s, %s, %s);"
-			some = random.SystemRandom().getrandbits(16)
+			sql = "INSERT INTO reviews_db.review_comments (meal_id, rating, comment) VALUES (%s, %s, %s);"
 			cursor.execute(sql, (some, the_id, rating, comment,))
 			db.commit()
 			return cursor.rowcount
@@ -119,13 +118,23 @@ class Comment():
 		return
 
 	
-	def get(the_id, nr_of_comments=10):
-		"""Gets a comment from the database."""
+	def get(the_id, sort='DESC', offset=0, limit=10):
+		"""Gets a comment from the database.
+		\n'the_id' is the id of the object getting reviewed, and must be set.
+		\nThe 'sort' parameter tells the query if it's sorted in ascending or descending order,\
+		the default is 'DESC' and the only other value that can be set is 'ASC'.
+		\nThe 'offset' parameter tells the query which row should it start at, the default is 0.
+		\nThe 'limit' parameter tells the query how many rows it should return, \
+		starting at the 'offset'.
+		"""
 		db = get_db()
 		cursor = db.cursor()
+		sort = sort.upper()
+		if sort != 'ASC' and sort != 'DESC':
+			sort = 'DESC'
 		try:
-			sql = "SELECT rating, comment FROM reviews_db.review_comments WHERE meal_id=%s ORDER BY comment_id DESC LIMIT %s"
-			cursor.execute(sql, (the_id, nr_of_comments,))
+			sql = f"SELECT rating, comment FROM reviews_db.review_comments WHERE meal_id=%s ORDER BY comment_id {sort} LIMIT %s,%s;"
+			cursor.execute(sql, (the_id, offset, limit,))
 			return cursor.fetchall()
 		except mysql.connector.Error as err:
 			return err
