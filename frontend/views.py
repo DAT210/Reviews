@@ -11,7 +11,7 @@ bp = Blueprint('api',__name__,url_prefix='/form', template_folder='templates')
 def show_form(meal_id):
     form = ReviewForm()
     if request.method == 'GET':
-        response = requests.api.get(f"http://192.168.99.100:4500/api/1.0/reviews/{meal_id}/", timeout=10.0)
+        response = requests.api.get(f"http://review_api:80/api/1.0/reviews/{meal_id}/", timeout=10.0)
         if response.status_code is 200: 
             review = response.json()['data']['review']
             return render_template("review.html", form = form, review=review)
