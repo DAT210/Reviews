@@ -19,35 +19,26 @@ h1 { font-size: 1.5em; margin: 10px; }
   color: #FFBA00;
 
 }.rating i:last-child {
-
   display: none;
+}
 
-}.rating input:checked ~ label i:last-child,
-
+.rating input:checked ~ label i:last-child,
 .rating input:checked + label i:last-child,
-
 .rating label:hover ~ label i:last-child,
-
 .rating label:hover i:last-child {
-
   display: inline;
+}
 
-}.rating input:checked ~ label i:first-child,
-
+.rating input:checked ~ label i:first-child,
 .rating input:checked + label i:first-child,
-
 .rating label:hover ~ label i:first-child,
-
 .rating label:hover i:first-child {
-
   display: none;
+}
 
-}.rating input {
-
+.rating input {
   display: none;
-
   position: relative;
-
 }
 
 .comment{
