@@ -7,9 +7,9 @@ h1 { font-size: 1.5em; margin: 10px; }
 .rating { 
   border: none;
   float: left;
-  font-size: 200%;
   width: 250px;
-  margin: 4px;
+  height: 250px;
+  margin-left: 8px
 }
 
 .rating label {
@@ -36,16 +36,17 @@ h1 { font-size: 1.5em; margin: 10px; }
   display: none;
 }
 
+
 .rating input {
   display: none;
   position: relative;
 }
 
 .comment{
-  position: absolute;
-  margin: 10px;
+  position: relative;
 }
 
 .submit{
   position: relative;
+  top: 100px;
 }
