@@ -51,3 +51,7 @@ h1 { font-size: 1.5em; margin: 10px; }
   position: absolute;
   top: 200px;
 }
+
+.jumbotron{
+  height: 1000px;
+}

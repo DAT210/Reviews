@@ -15,23 +15,33 @@
     <div class="jumbotron">
         <h1 class="display-4">Review {{review.id}}</h1>
 
-    <img id="mealPic" src="../static/images/fisk.jpg" height="25%" width="25%">
-    <form class="col-md-4" method="POST">
-        <div class="rating">
-            {% for button in form.rating %}
-                
-                {{ button }} {{ button.label }}
-                
-            {% endfor %}
-        </div><br>
+        <img id="mealPic" src="../static/images/fisk.jpg" height="250px" width="250px">
+        <form class="col-md-4" method="POST">
+            <div class="rating">
+                {% for button in form.rating %}
+                    
+                    {{ button }} {{ button.label }}
+                    
+                {% endfor %}
+            </div><br>
 
-        <div class="comment">
-            {{form.comments.label}} <br>
-            {{form.comments}}
-        </div> <br><br><br><br><br><br>
-        <div class="submit">
-            {{form.submit}}
-        </div>
-    </form>
+            <div class="comment">
+                {%if form.errors %}
+                <ul class="alert alert-danger">
+                    {%for field in form.errors%}
+                        {%for error in form.errors[field] %}
+                            <li>{{error}}</li>
+                        {%endfor%}
+                    {%endfor%}
+                </ul>
+                {%endif%}
+                {{form.comments.label}} <br>
+                {{form.comments}}
+            </div> <br>
+            <div class="submit">
+                {{form.submit}}
+            </div>
+        </form>
+    </div>
 </body>
 </html>

@@ -1,6 +1,7 @@
 from flask import (
-	Flask, g, jsonify, make_response, request, Blueprint, render_template
+	Flask, g, jsonify, make_response, request, Blueprint, render_template, redirect
 )
+import json
 import requests
 from frontend.forms import ReviewForm
 from jinja2 import TemplateNotFound
@@ -23,8 +24,32 @@ def show_form(meal_id):
     elif request.method == 'POST':
         if form.validate_on_submit:
             review_values = request.form.to_dict()
-            return make_response(jsonify(review_values))
-        return "Hello world!"
+            try:
+                ratingInt = int(review_values.pop('rating'))
+            except ValueError:
+                return "Value error"
+            response = {
+                'data': {
+                    'id': meal_id,
+                    'rating': ratingInt,
+                    'comment': review_values.pop('comments')
+                }
+            }
+            api_response = requests.api.patch("http://review_api:80/api/1.0/reviews/", json=response)
+            if len(form.comments.data) > 255:
+                return "Don't fuck with the html"
+
+            try:
+                status = api_response.json().get('status')
+            except json.decoder.JSONDecodeError as err:
+                return render_template("dummy.html", status=err)
+            
+            if status == 'success':
+                return render_template("dummy.html", status=status) #skal være Redirect til order history
+
+                
+        return render_template("review.html", form=form)
+ 
     else:
         return "Wrong response method"
 
