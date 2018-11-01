@@ -1,16 +1,48 @@
 from flask import (
-	Flask, g, jsonify, make_response, request, Blueprint, render_template, redirect
+	Flask, g, jsonify, make_response, request, Blueprint, render_template, redirect, url_for
 )
 import json
 import requests
 from frontend.forms import ReviewForm
 from jinja2 import TemplateNotFound
 
-bp = Blueprint('api',__name__,url_prefix='/form', template_folder='templates')
+bp = Blueprint('api',__name__,url_prefix='/do_review', template_folder='templates')
+'''
+@bp.route("/history/<string:customer_id>/", methods=['GET'])
+def show_history(customer_id):
+    previous_orders = None
+    if request.method == 'GET':
+        response = requests.api.get(f"http://review_api:80/api/1.0/reviews/{meal_id}/", timeout=10.0) #skal være request til orders, trenger en metode som tar inn customer ID og returner alle ordre
+        if response.status_code is 200:
+            previous_orders = response.json()['data']['previous_orders']    
+            return render_template("history.html", previous_orders=previous_orders)
+        else:
+            return "wrong"
+    else:
+        return "Wrong response method"
+'''
 
-@bp.route("/<string:meal_id>/", methods=['POST', 'GET'])
+@bp.route("/history/<string:customer_id>/", methods=['GET'])
+def show_history(customer_id):
+    if request.method == 'GET':
+        previous_orders = []
+        meals = []
+        for i in range (10001, 10006):
+            previous_orders.append({
+            "order_id" : i
+
+        })
+
+        return render_template("history.html", previous_orders=previous_orders, meals = meals)
+    else:
+        return "Wrong response method"
+
+
+
+@bp.route("/form/<string:meal_id>/", methods=['POST', 'GET'])
 def show_form(meal_id):
     form = ReviewForm()
+    review = None
     if request.method == 'GET':
         response = requests.api.get(f"http://review_api:80/api/1.0/reviews/{meal_id}/", timeout=10.0)
         if response.status_code is 200: 
@@ -37,15 +69,15 @@ def show_form(meal_id):
             }
             api_response = requests.api.patch("http://review_api:80/api/1.0/reviews/", json=response)
             if len(form.comments.data) > 255:
-                return "Don't fuck with the html"
+                return render_template("review.html", form = form, review=review)
 
             try:
                 status = api_response.json().get('status')
             except json.decoder.JSONDecodeError as err:
-                return render_template("dummy.html", status=err)
+                return render_template("review.html", status=err)
             
             if status == 'success':
-                return render_template("dummy.html", status=status) #skal være Redirect til order history
+                return redirect(url_for("api.show_history", customer_id="1")) #skal være history/x, hvor x er riktig customer_id
 
                 
         return render_template("review.html", form=form)
@@ -57,4 +89,4 @@ def show_form(meal_id):
 
 
 
-
+ 

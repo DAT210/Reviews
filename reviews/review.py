@@ -108,7 +108,7 @@ class Comment():
 		cursor = db.cursor()
 		try:
 			sql = "INSERT INTO reviews_db.review_comments (meal_id, rating, comment) VALUES (%s, %s, %s);"
-			cursor.execute(sql, (some, the_id, rating, comment,))
+			cursor.execute(sql, (the_id, rating, comment,))
 			db.commit()
 			return cursor.rowcount
 		except mysql.connector.Error as err:
