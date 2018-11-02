@@ -13,3 +13,5 @@ EXPOSE 80
 ENV NAME World
 ENV FLASK_APP=reviews/app.py
 ENV FLASK_ENV=development
+
+#CMD [ "python", "reviews/app.py" ]
