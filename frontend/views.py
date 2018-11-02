@@ -1,12 +1,13 @@
 from flask import (
-	Flask, g, jsonify, make_response, request, Blueprint, render_template, redirect, url_for
+	Flask, g, jsonify, make_response, request, Blueprint, render_template, redirect, url_for, current_app
 )
 import json
+from random import randint
 import requests
 from frontend.forms import ReviewForm
 from jinja2 import TemplateNotFound
 
-bp = Blueprint('api',__name__,url_prefix='/do_review', template_folder='templates')
+bp = Blueprint('api',__name__,url_prefix='/reviews', template_folder='templates')
 '''
 @bp.route("/history/<string:customer_id>/", methods=['GET'])
 def show_history(customer_id):
@@ -24,18 +25,14 @@ def show_history(customer_id):
 
 @bp.route("/history/<string:customer_id>/", methods=['GET'])
 def show_history(customer_id):
-    if request.method == 'GET':
-        previous_orders = []
-        meals = []
-        for i in range (10001, 10006):
-            previous_orders.append({
-            "order_id" : i
+    previous_orders = [{'order_id': i,
+        'meals': [randint(0,9) for i in range(0,9)]
+        } for i in range(10001, 10006)]
+    current_app.logger.info(previous_orders)
 
-        })
 
-        return render_template("history.html", previous_orders=previous_orders, meals = meals)
-    else:
-        return "Wrong response method"
+    return render_template("history.html", previous_orders=previous_orders)
+
 
 
 
