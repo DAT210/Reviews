@@ -10,8 +10,8 @@ import mysql.connector
 
 
 def get_db():
-	"""Makes an unique connection for each context to the database of the application,\
-	reuses it if it's called again."""
+	"""Makes an unique connection for each context to the database of the \
+	application, reuses it if it's called again."""
 
 	if not hasattr(g, '_database'):
 		g._database = mysql.connector.connect(
@@ -34,9 +34,18 @@ def teardown_db(error):
 
 
 @click.command('init-db')
-@click.option('--host', default='localhost', help="The host address of the database, default=localhost")
-@click.option('--user', default='root', help="Set database user to be used, default=root")
-@click.option('--pswrd', default='root', help="Set database password to be used, default=root")
+@click.option(
+	'--host', default='localhost',
+	help="The host address of the database, default=localhost"
+	)
+@click.option(
+	'--user', default='root',
+	help="Set database user to be used, default=root"
+	)
+@click.option(
+	'--pswrd', default='root',
+	help="Set database password to be used, default=root"
+	)
 @with_appcontext
 def build_db(host, user, pswrd):
 	config = {

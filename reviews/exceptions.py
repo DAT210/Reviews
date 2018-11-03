@@ -2,6 +2,7 @@
 
 from flask import jsonify
 
+
 class APIError(Exception):
 	"""Exception class for API error handling."""
 	status_code = 404

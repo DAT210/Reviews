@@ -4,39 +4,43 @@ from reviews.db import (
 	get_db, mysql
 )
 
+
 class Rating():
-	"""Used for setting, adding, and getting ratings of an object."""
+	"""Used for setting, adding, getting, and removing ratings of an object."""
 
 	def set(id, rating):
+		"""Used for setting a rating in the database, the 'rating' must be an integer."""
 		db = get_db()
 		cursor = db.cursor()
 		try:
-			sql = "SELECT score, nr_of_ratings FROM reviews_db.review_meals WHERE meal_id=%s"
+			sql = "SELECT score, nr_of_ratings \
+				FROM reviews_db.review_meals WHERE meal_id=%s;"
 			cursor.execute(sql, (id,))
 			fetch = cursor.fetchone()
 			if fetch is None:
 				return
-			(score, nr_of_ratings) = fetch
+			(score, nr_of_ratings,) = fetch
 			score += rating
 			nr_of_ratings += 1
-			rating = round((score/nr_of_ratings), 1)
-			sql = "UPDATE reviews_db.review_meals SET rating=%s, score=%s, nr_of_ratings=%s WHERE meal_id=%s"
-			cursor.execute(sql, (rating, score, nr_of_ratings, id,))
+			rating_f = round((score/nr_of_ratings), 1)
+			sql = "UPDATE reviews_db.review_meals \
+				SET rating=%s, score=%s, nr_of_ratings=nr_of_ratings+1 \
+				, nr_of_%s_ratings=nr_of_%s_ratings+1 WHERE meal_id=%s;"
+			cursor.execute(sql, (rating_f, score, rating, rating, id,))
 			set_check = cursor.rowcount
 			db.commit()
 			return set_check
 		except mysql.connector.Error as err:
-			print(str(err))
+			return err
 		finally:
 			cursor.close()
 		return
-
 
 	def get(id):
 		db = get_db()
 		cursor = db.cursor()
 		try:
-			sql = "SELECT rating FROM reviews_db.review_meals WHERE meal_id=%s"
+			sql = "SELECT rating FROM reviews_db.review_meals WHERE meal_id=%s;"
 			cursor.execute(sql, (id,))
 			rating = cursor.fetchone()
 			if rating is not None:
@@ -48,7 +52,6 @@ class Rating():
 		finally:
 			cursor.close()
 		return
-
 
 	def pull():
 		db = get_db()
@@ -62,7 +65,6 @@ class Rating():
 		finally:
 			cursor.close()
 		return
-
 
 	def remove(id):
 		db = get_db()
@@ -79,7 +81,6 @@ class Rating():
 		finally:
 			cursor.close()
 		return
-
 
 	def add(meal_ids):
 		db = get_db()
@@ -107,7 +108,8 @@ class Comment():
 		db = get_db()
 		cursor = db.cursor()
 		try:
-			sql = "INSERT INTO reviews_db.review_comments (meal_id, rating, comment) VALUES (%s, %s, %s);"
+			sql = "INSERT INTO reviews_db.review_comments(meal_id, rating, comment) \
+				VALUES (%s, %s, %s);"
 			cursor.execute(sql, (the_id, rating, comment,))
 			db.commit()
 			return cursor.rowcount
