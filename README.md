@@ -52,7 +52,7 @@ The structure of the repository will look almost like this:
 	instance/ <-- must be added
 		config.py <-- must be added
 ```
-As one can see the *instance* folder with its content is missing, the folder will be automatically created the first time one starts the API, but the _config.py_ file must be added manually.
+As one can see the *instance* folder with its content is missing, it could be created manually, elsewise the folder will be automatically created the first time one runs the API, but the _config.py_ file must always be added manually.
 The _config.py_ file has the following structure:
 ```python
 APP_NAME = 'Review API'
@@ -154,8 +154,17 @@ Where _\<ID\>_ is the ID of the object one wants the rating of. This will return
   'data': {
     'review': {
       'id': <id_of_the_object>(str),
+      'name': <name_of_the_object>(str),
       'rating': <rating_of_the_object>(float),
+      'review_rating_count': {
+      	'1': <nr_of_1_ratings>,
+		'2': <nr_of_2_ratings>,
+		'3': <nr_of_3_ratings>,
+		'4': <nr_of_4_ratings>,
+		'5': <nr_of_5_ratings>
+      }
       'description': <description>(str),
+	  'comments_count': <amount_of_comments>,
       'comments': []
     }
   }
@@ -174,15 +183,15 @@ The POST method of the API request is used for adding a new ID, on a successful 
 ```
 {
   'data': [
-    <id_1>,
-    <id_2>,
-    <id_3>,
+    {'id':<id_1>, 'name':<name_1>},
+    {'id':<id_2>, 'name':<name_2>},
+    {'id':<id_3>, 'name':<name_3>},
     ...,
-    <id_n>
+    {'id':<id_n>, 'name':<name_n>},
   ]
 }
 ```
-Where the ```'data'``` field contains an array of ID's to be added, if one fail none will be added.\
+Where the ```'data'``` field contains an array of dictionaries with the ID and name of the objects to be added, if one fail none will be added.\
 Returns the following json format on success:
 ```
 {
