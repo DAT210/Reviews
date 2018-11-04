@@ -158,10 +158,10 @@ Where _\<ID\>_ is the ID of the object one wants the rating of. This will return
       'rating': <rating_of_the_object>(float),
       'review_rating_count': {
       	'1': <nr_of_1_ratings>,
-		'2': <nr_of_2_ratings>,
-		'3': <nr_of_3_ratings>,
-		'4': <nr_of_4_ratings>,
-		'5': <nr_of_5_ratings>
+	'2': <nr_of_2_ratings>,
+	'3': <nr_of_3_ratings>,
+	'4': <nr_of_4_ratings>,
+	'5': <nr_of_5_ratings>
       }
       'description': <description>(str),
 	  'comments_count': <amount_of_comments>,
