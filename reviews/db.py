@@ -10,17 +10,17 @@ import mysql.connector
 
 
 def get_db():
-	"""Makes an unique connection for each context to the database of the \
+	"""Makes an unique connection for each context to the database of the\
 	application, reuses it if it's called again."""
 
 	if not hasattr(g, '_database'):
 		g._database = mysql.connector.connect(
-			host=current_app.config['DB_CONFIG']['host'], 
+			host=current_app.config['DB_CONFIG']['host'],
 			user=current_app.config['DB_CONFIG']['user'],
 			password=current_app.config['DB_CONFIG']['pswrd'],
 			database=current_app.config['DB_CONFIG']['db'],
 			port=current_app.config['DB_CONFIG']['port']
-			)
+		)
 
 	return g._database
 
@@ -37,15 +37,15 @@ def teardown_db(error):
 @click.option(
 	'--host', default='localhost',
 	help="The host address of the database, default=localhost"
-	)
+)
 @click.option(
 	'--user', default='root',
 	help="Set database user to be used, default=root"
-	)
+)
 @click.option(
 	'--pswrd', default='root',
 	help="Set database password to be used, default=root"
-	)
+)
 @with_appcontext
 def build_db(host, user, pswrd):
 	config = {
@@ -64,7 +64,7 @@ def build_db(host, user, pswrd):
 		with current_app.open_resource('../db/init.sql') as f:
 			statements = f.read().decode('utf8')
 			for statement in statements.split(';'):
-				cursor.execute(statement)	
+				cursor.execute(statement)
 		db.commit()
 	except mysql.connector.Error as err:
 		click.echo('Failed initializing database.')
