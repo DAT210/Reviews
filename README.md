@@ -164,7 +164,7 @@ Where _\<ID\>_ is the ID of the object one wants the rating of. This will return
 	'5': <nr_of_5_ratings>
       }
       'description': <description>(str),
-	  'comments_count': <amount_of_comments>,
+	'comments_count': <amount_of_comments>,
       'comments': []
     }
   }
