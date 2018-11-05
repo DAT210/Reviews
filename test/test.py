@@ -4,8 +4,6 @@ from flask import current_app
 from reviews import create_app
 from reviews.db import get_db, mysql
 import unittest
-import glob
-import os
 
 
 class Test(unittest.TestCase):
@@ -17,16 +15,7 @@ class Test(unittest.TestCase):
 		if not self.initialized:
 			print(f"\nInitialize API test...")
 			self.__class__.initialized = True
-			app = create_app({
-				'DB_CONFIG': {
-					'host': 'localhost',
-					'port': 3306,
-					'user': 'root',
-					'pswrd': 'root',
-					'db': None
-				},
-				'DEBUG': True
-			})
+			app = create_app('testing')
 			app.testing = True
 			self.client = app.test_client()
 			self.__class__.init_test_db(app)

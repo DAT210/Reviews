@@ -1,5 +1,4 @@
 '''The Review portion of the Reviews API'''
-import random
 from reviews.db import (
 	get_db, mysql
 )

@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS reviews_db;
 
 -- Drop tables if exist:
-DROP TABLE IF EXISTS reviews_db.review_meals;
+DROP TABLE IF EXISTS reviews_db.review_ratings;
 DROP TABLE IF EXISTS reviews_db.review_comments;
 DROP TABLE IF EXISTS func.increment_table;
 

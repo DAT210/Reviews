@@ -10,8 +10,10 @@ import mysql.connector
 
 
 def get_db():
-	"""Makes an unique connection for each context to the database of the\
-	application, reuses it if it's called again."""
+	"""
+	Makes an unique connection for each context to the database of the\
+	application, reuses it if it's called again.
+	"""
 
 	if not hasattr(g, '_database'):
 		g._database = mysql.connector.connect(
