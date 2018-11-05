@@ -57,10 +57,10 @@ def show_form(meal_id):
 			try:
 				status = api_response.json().get('status')
 			except json.decoder.JSONDecodeError as err:
-				return render_template("reviews/dummy.html", status=err)
+				return render_template("dummy.html", status=err)
 			if status == 'success':
 				flash('The review has successfully been added!', category='success')
-				return redirect(url_for('reviews.show_form', meal_id=meal_id)) #skal være Redirect til order history
+				return redirect(url_for("reviews.show_history", customer_id="1"))
 		flash("The form couldn't be validated.", category='warning')	
 		return redirect(url_for('reviews.show_form', meal_id=meal_id))
 	try:
@@ -70,7 +70,7 @@ def show_form(meal_id):
 		return redirect(url_for('reviews.show_form', meal_id=meal_id)), 500
 	if response.status_code is 200:
 		review = response.json()['data']['review']
-		return render_template("reviews/review.html", form=form, review=review)
+		return render_template("review.html", form=form, review=review)
 	else:
 		return redirect(url_for('reviews.show_form', meal_id=meal_id))
 

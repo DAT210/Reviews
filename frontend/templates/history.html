@@ -13,8 +13,17 @@
     <link rel="stylesheet" href="{{url_for('static' , filename='css/reviews.css')}}">
 </head>
 <body>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    <ul class="alert">
+        {% for category, message in messages %}
+        <li class="alert alert-{{category}}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
     <h1>Listing previous orders</h1>
-    <table class="table>
+    <table class="table">
         <thead class="thead-dark">
             <tr>
                 <th>Order ID</th>
@@ -30,11 +39,9 @@
             
             <tr>
                 <td id="myDropdown-{{ loop.index }}" class="dropdown-content">
-                    <ul>
                         {% for meal in order.meals %}
-                        <li>{{meal}}</li>
+                        <a href={{url_for('reviews.show_form', meal_id=meal)}}>{{meal}}</a>
                         {% endfor %}
-                    </ul>
                 </td>
             </tr>
             {% endfor %}
