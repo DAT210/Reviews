@@ -23,7 +23,7 @@
     {% endwith %}
     <div class="jumbotron">
         <h1 class="display-4">Review {{review.id}}</h1>
-        <img id="mealPic" src="{{ url_for('static', filename='reviews/images/fisk.jpg') }}" height="250px" width="250px">
+        <img id="mealPic" src="{{ url_for('static', filename='images/feedbackpic.png') }}" height="250px" width="250px">
         <form class="col-md-4" method="POST">
             <div class="rating">
                 {% for button in form.rating %}
