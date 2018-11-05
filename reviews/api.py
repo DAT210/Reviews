@@ -6,6 +6,7 @@ from flask import (
 from reviews.review import (
 	Rating, Comment
 )
+from reviews.api_templates import API_Templates as api_tmpl
 from reviews.exceptions import APIError
 
 bp = Blueprint('api', __name__, url_prefix='/api/1.0')
@@ -46,32 +47,14 @@ def get_review(meal_id):
 	else:
 		comments_reply = []
 		for (c_rating, comment,) in comments:
-			comments_reply.append({
-				'rating': c_rating,
-				'comment': comment
-			})
+			comments_reply.append(api_tmpl.comment(c_rating, comment))
 	(name, rating, ratings_1, ratings_2, ratings_3, ratings_4, ratings_5
 		) = ratings
-	reply = {
-		'status': 'success',
-		'data': {
-			'review': {
-				'id': meal_id,
-				'name': name,
-				'rating': rating,
-				'review_rating_count': {
-					'1': ratings_1,
-					'2': ratings_2,
-					'3': ratings_3,
-					'4': ratings_4,
-					'5': ratings_5
-				},
-				'description': f"{name} has a rating of {rating} of 5 stars.",
-				'comments_count': 0 if comments_reply is None else len(comments_reply),
-				'comments': comments_reply
-			}
-		}
-	}
+	reply = api_tmpl.get_data(
+		meal_id, name, rating, ratings_1, ratings_2,
+		ratings_3, ratings_4, ratings_5, comments_reply
+	)
+	reply = api_tmpl.standard('success', {'review': reply})
 	return make_response(jsonify(reply)), 200
 
 
@@ -80,13 +63,7 @@ def get_reviews():
 	reviews = Rating.pull()
 	if reviews is None:
 		raise APIError("There are no reviews.", status_code=404, type='Not Found')
-
-	reply = {
-		'status': 'success',
-		'data': {'reviews': []}
-	}
-
-	replies = reply['data']['reviews']
+	replies = []
 	for (meal_id, meal_name, rating,) in reviews:
 		comments = Comment.get(meal_id)
 		if comments is None or isinstance(comments, Exception):
@@ -94,19 +71,10 @@ def get_reviews():
 		else:
 			comments_reply = []
 			for (rating, comment,) in comments:
-				comments_reply.append({
-					'rating': rating,
-					'comment': comment
-				})
-
-		replies.append({
-			'id': meal_id,
-			'name': meal_name,
-			'rating': rating,
-			'description': f"{meal_name} has a rating of {rating} of 5 stars.",
-			'comments': comments_reply
-		})
-
+				comments_reply.append(api_tmpl.comment(rating, comment))
+		replies.append(
+			api_tmpl.get_datas(meal_id, meal_name, rating, comments_reply))
+		reply = api_tmpl.standard('success', {'reviews': replies})
 	return make_response(jsonify(reply)), 200
 
 
@@ -152,11 +120,7 @@ def set_review():
 	check = Comment.set(meal_id, rating, comment)
 	if isinstance(check, Exception):
 		raise APIError(check, status_code=404, type='Not Found')
-	reply = {
-		'status': 'success',
-		'data': None
-	}
-
+	reply = api_tmpl.standard('success', None)
 	return make_response(jsonify(reply)), 200
 
 
@@ -177,12 +141,7 @@ def add_review():
 	check = Rating.add(request.get_json()['data'])
 	if isinstance(check, Exception):
 		raise APIError(str(check), status_code=409, type='Conflict')
-
-	reply = {
-		'status': 'success',
-		'data': None
-	}
-
+	reply = api_tmpl.standard('success', None)
 	return make_response(jsonify(reply)), 201
 
 
@@ -195,12 +154,7 @@ def remove_review(meal_id):
 		raise APIError(
 			f"The ID '{meal_id}' could not be found.",
 			status_code=404, type='Not Found')
-
-	reply = {
-		'status': "success",
-		'data': None
-	}
-
+	reply = api_tmpl.standard('success', None)
 	return make_response(jsonify(reply)), 200
 
 
