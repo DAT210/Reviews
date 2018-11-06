@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS reviews_db;
 
 -- Drop tables if exist:
-DROP TABLE IF EXISTS reviews_db.review_meals;
+DROP TABLE IF EXISTS reviews_db.review_ratings;
 DROP TABLE IF EXISTS reviews_db.review_comments;
 DROP TABLE IF EXISTS func.increment_table;
 
@@ -35,8 +35,9 @@ END//
 DELIMITER ;
 
 -- Creates the reviews table for meals:
-CREATE TABLE reviews_db.review_meals (
+CREATE TABLE reviews_db.review_ratings (
   meal_id varchar(16) NOT NULL,
+  meal_name varchar(16) NOT NULL,
   rating double unsigned DEFAULT 0,
   score int(10) unsigned DEFAULT 0,
   nr_of_1_ratings int(10) unsigned DEFAULT 0,

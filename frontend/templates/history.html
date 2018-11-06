@@ -11,12 +11,20 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 
     <link rel="stylesheet" href="{{url_for('static' , filename='css/reviews.css')}}">
-    <script src="/static/js/reviews.js"></script>
 </head>
 <body>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    <ul class="alert">
+        {% for category, message in messages %}
+        <li class="alert alert-{{category}}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
     <h1>Listing previous orders</h1>
-    <table class="table-bordered table-striped">
-        <thead>
+    <table class="table">
+        <thead class="thead-dark">
             <tr>
                 <th>Order ID</th>
             </tr>
@@ -25,15 +33,15 @@
             {% for order in previous_orders %}
             <tr>
                 <td>
-                    <button onclick="clickFunction()" class="dropbtn">{{order.order_id}}</button></td>
-                    <div id="myDropdown" class="dropdown-content">
-
-                            <ul>
-                                <li>Test1</li>
-                                <li>Test2 {{order.order_id}}</li>
-                            </ul>
-
-                        </div>
+                    <button class="dropbtn" id="dropbtn-{{ loop.index }}">{{order.order_id}}</button></td>
+                </td>
+            </tr>
+            
+            <tr>
+                <td id="myDropdown-{{ loop.index }}" class="dropdown-content">
+                        {% for meal in order.meals %}
+                        <a href={{url_for('reviews.show_form', meal_id=meal)}}>{{meal}}</a>
+                        {% endfor %}
                 </td>
             </tr>
             {% endfor %}
@@ -41,4 +49,5 @@
 </table>
             
 </body>
+<script src="{{ url_for('static', filename='js/reviews.js') }}"></script>
 </html>

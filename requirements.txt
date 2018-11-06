@@ -4,3 +4,4 @@ click
 flask-CLI
 requests
 Flask-WTF
+python-dotenv
