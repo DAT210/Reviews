@@ -1,35 +1,26 @@
-version: '3'
+version: '3.5'
 services: 
 
-  app: 
+  api:
     container_name: review_api
     restart: always
     build:
       context: .
       dockerfile: Dockerfile
+      labels: 
+        com.reviews.api: "Reviews API"
     depends_on: 
       - mysql
     ports:
-      - 4500:80
-    links:
-      - mysql:mysql
-    command: flask run --host=0.0.0.0 --port=80
-  
-  frontend:
-    container_name: front_end
-    restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile-front
-    ports: 
-      - 4400:80
-    links:
-      - app:review_api
+      - "4500:80" # Exposes the internal port 80 to external port 4500, remove external port in production.
+    networks:
+      - backend
+    links: 
+       - mysql:dbserver
     command: flask run -h 0.0.0.0 -p 80
 
   mysql:
-    container_name: mysql
-    image: mysql/mysql-server:latest
+    container_name: review_mysql
     build:
       context: .
       dockerfile: Dockerfile-db
@@ -39,4 +30,11 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PSWRD}
     ports:
-      - 3306:3306
+      - "3306:3306"
+    networks: 
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+    name: backend_net
