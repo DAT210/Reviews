@@ -15,7 +15,7 @@ bp = Blueprint('reviews',__name__,url_prefix='/reviews', template_folder='templa
 @bp.route("/history/<string:customer_id>/", methods=['GET'])
 def show_history(customer_id):
     previous_orders = [{'order_id': i,
-        'meals': [randint(0,9) for i in range(0,9)]
+        'meals': [i for i in range(0,9)]
         } for i in range(10001, 10006)]
     current_app.logger.info(previous_orders)
 
