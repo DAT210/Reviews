@@ -70,8 +70,8 @@ def get_reviews():
 			comments_reply = None
 		else:
 			comments_reply = []
-			for (rating, comment,) in comments:
-				comments_reply.append(api_tmpl.comment(rating, comment))
+			for (c_rating, comment,) in comments:
+				comments_reply.append(api_tmpl.comment(c_rating, comment))
 		replies.append(
 			api_tmpl.get_datas(meal_id, meal_name, rating, comments_reply))
 		reply = api_tmpl.standard('success', {'reviews': replies})
