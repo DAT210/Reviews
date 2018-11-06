@@ -22,7 +22,11 @@
     {% endif %}
     {% endwith %}
     <div class="jumbotron">
-        <h1 class="display-4">Review {{review.id}}</h1>
+        {% if review %}
+        <h1 class="display-4">Review {{review.name}}</h1>
+        {% else %}>
+        <h1 class="display-4">Doesn't Exist</h1>
+        {% endif %}
         <img id="mealPic" src="{{ url_for('static', filename='images/feedbackpic.png') }}" height="250px" width="250px">
         <form class="col-md-4" method="POST">
             <div class="rating">

@@ -1,7 +1,7 @@
 '''The standard views of the review part of the application.'''
 
 from flask import (
-		Flask, g, jsonify, make_response, request, Blueprint, render_template,
+	Flask, g, jsonify, make_response, request, Blueprint, render_template,
 	session, url_for, redirect, flash, current_app
 )
 import requests
@@ -9,18 +9,19 @@ import json
 from random import randint
 from frontend.forms import ReviewForm
 
-bp = Blueprint('reviews',__name__,url_prefix='/reviews', template_folder='templates')
+bp = Blueprint(
+	'reviews', __name__, url_prefix='/reviews', template_folder='templates')
 
 
 @bp.route("/history/<string:customer_id>/", methods=['GET'])
 def show_history(customer_id):
-    previous_orders = [{'order_id': i,
-        'meals': [i for i in range(0,9)]
-        } for i in range(10001, 10006)]
-    current_app.logger.info(previous_orders)
+	previous_orders = [
+		{'order_id': i, 'meals': [i for i in range(0, 9)]
+			} for i in range(10001, 10006)
+	]
+	current_app.logger.info(previous_orders)
+	return render_template("history.html", previous_orders=previous_orders)
 
-
-    return render_template("history.html", previous_orders=previous_orders)
 
 @bp.route('/hello/', methods=['GET', 'POST'])
 def reviews():
