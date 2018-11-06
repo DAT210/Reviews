@@ -55,3 +55,37 @@ h1 { font-size: 1.5em; margin: 10px; }
 .jumbotron{
   height: 1000px;
 }
+
+
+
+
+.dropbtn {
+  color: blue;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: relative;
+  background-color: #f1f1f1;
+  width: 300px;
+  overflow: auto;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  padding: 4px;
+  display: block;
+}
+
+.show {display: block;}
+
