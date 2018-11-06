@@ -42,14 +42,14 @@ class LocalConfig(DevelopmentConfig):
 		'host': 'localhost',
 		'port': 3306,
 		'db': 'reviews_db',
-		'user': '<set_to_whatever>',
-		'pswrd': '<set_to_whatever>'
+		'user': os.environ.get('DB_LOCAL_USER'),
+		'pswrd': os.environ.get('DB_LOCAL_PSWRD')
 	}
 
 
 class ProductionConfig(Config):
 	@classmethod
-	def init_app(app):
+	def init_app(cls, app):
 		Config.init_app(app)
 
 		import logging
@@ -59,7 +59,7 @@ class ProductionConfig(Config):
 
 class DockerConfig(ProductionConfig):
 	@classmethod
-	def init_app(app):
+	def init_app(cls, app):
 		ProductionConfig.init_app(app)
 
 		import logging
@@ -73,6 +73,8 @@ config = {
 	'development': DevelopmentConfig,
 	'testing': TestingConfig,
 	'production': ProductionConfig,
+	'docker': DockerConfig,
+	'local': LocalConfig,
 
 	'default': DevelopmentConfig
 }
