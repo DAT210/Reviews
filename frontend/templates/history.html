@@ -33,14 +33,14 @@
             {% for order in previous_orders %}
             <tr>
                 <td>
-                    <button class="dropbtn" id="dropbtn-{{ loop.index }}">{{order.order_id}}</button></td>
+                    <button class="dropbtn" id="dropbtn-{{ loop.index }}">{{order.OrderID}}</button></td>
                 </td>
             </tr>
             
             <tr>
                 <td id="myDropdown-{{ loop.index }}" class="dropdown-content">
                         {% for meal in order.meals %}
-                        <a href={{url_for('reviews.show_form', meal_id=meal)}}>{{meal}}</a>
+                        <a href={{url_for('reviews.show_form', meal_id=CourseID)}}>{{meal.CourseID}} - {{meal.CourseName}}</a>
                         {% endfor %}
                 </td>
             </tr>
