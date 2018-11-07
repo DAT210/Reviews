@@ -15,12 +15,48 @@ bp = Blueprint(
 
 @bp.route("/history/<string:customer_id>/", methods=['GET'])
 def show_history(customer_id):
+	'''
 	previous_orders = [
 		{'order_id': i, 'meals': [i for i in range(0, 9)]
 			} for i in range(10001, 10006)
 	]
 	current_app.logger.info(previous_orders)
 	return render_template("history.html", previous_orders=previous_orders)
+	'''
+
+	try:
+		response_orders = requests.api.get(f"http://python-api:80/orders/api/customerorders/{customer_id}", timeout=30.0)
+	except:
+		flash("The server couldn't reach the API.", category='info')
+		return redirect(url_for('reviews.reviews')), 500
+	if response_orders.status_code is 200:
+		try:
+			previous_orders = response_orders.json()
+		except json.decoder.JSONDecodeError as err:
+			return str(err.msg) # TODO: Fix return.
+		try:
+			for order in previous_orders:
+				response_meals = requests.api.get(f"http://python-api/orders/api/courses/{int(order['OrderID'])}", timeout=30.0)
+				if response_meals.status_code is 200:
+					try: 
+						meals = response_meals.json()
+					except json.decoder.JSONDecodeError as err:
+						return str(err.msg) # TODO: Fix return.
+					current_app.logger.info(meals)
+					order.update({'meals': meals})
+				current_app.logger.info(order)
+		except:
+			return "wrong" 
+		current_app.logger.info(previous_orders)
+		return render_template("history.html", previous_orders=previous_orders)
+	return "Faulty"
+	'''
+	if response.status_code is 200:
+		review = response.json()['data']['review']
+		# return render_template("review.html", form=form, review=review)
+	else:
+		return redirect(url_for('reviews.show_form', meal_id=meal_id))
+	'''
 
 
 @bp.route('/hello/', methods=['GET', 'POST'])
