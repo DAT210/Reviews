@@ -15,14 +15,6 @@ bp = Blueprint(
 
 @bp.route("/history/<string:customer_id>/", methods=['GET'])
 def show_history(customer_id):
-	'''
-	previous_orders = [
-		{'order_id': i, 'meals': [i for i in range(0, 9)]
-			} for i in range(10001, 10006)
-	]
-	current_app.logger.info(previous_orders)
-	return render_template("history.html", previous_orders=previous_orders)
-	'''
 
 	try:
 		response_orders = requests.api.get(f"http://python-api:80/orders/api/customerorders/{customer_id}", timeout=30.0)
@@ -50,14 +42,7 @@ def show_history(customer_id):
 		current_app.logger.info(previous_orders)
 		return render_template("history.html", previous_orders=previous_orders)
 	return "Faulty"
-	'''
-	if response.status_code is 200:
-		review = response.json()['data']['review']
-		# return render_template("review.html", form=form, review=review)
-	else:
-		return redirect(url_for('reviews.show_form', meal_id=meal_id))
-	'''
-
+	
 
 @bp.route('/hello/', methods=['GET', 'POST'])
 def reviews():
@@ -94,7 +79,7 @@ def show_form(meal_id):
 			try:
 				status = api_response.json().get('status')
 			except json.decoder.JSONDecodeError as err:
-				return render_template("dummy.html", status=err)
+				return str(err.msg) # TODO: Fix return.
 			if status == 'success':
 				flash('The review has successfully been added!', category='success')
 				return redirect(url_for("reviews.show_history", customer_id="1"))
