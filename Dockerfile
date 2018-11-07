@@ -11,7 +11,7 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 EXPOSE 80
 
 ENV NAME World
-ENV FLASK_APP=reviews/app.py
+ENV FLASK_APP=app.py
 ENV FLASK_ENV=development
 
 #CMD [ "python", "reviews/app.py" ]

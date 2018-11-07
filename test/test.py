@@ -19,7 +19,6 @@ class Test(unittest.TestCase):
 			app.testing = True
 			self.client = app.test_client()
 			self.__class__.init_test_db(app)
-			app.config['DB_CONFIG']['db'] = 'reviews_test'
 			self.__class__.app = app
 
 	def tearDown(self):
@@ -52,5 +51,5 @@ class Test(unittest.TestCase):
 				print(f"Error_testDBbuild: {err}")
 			finally:
 				cursor.close()
-				app.config['DB_CONFIG']['db'] = 'reviews_test'
+				app.config['DB_CONFIG']['database'] = 'reviews_test'
 				print(f"Test database initialized!")

@@ -12,9 +12,9 @@ class Config:
 	DB_CONFIG = {
 		'host': 'dbserver',
 		'port': 3306,
-		'db': 'reviews_db',
+		'database': 'reviews_db',
 		'user': os.environ.get('DB_USER'),
-		'pswrd': os.environ.get('DB_PSWRD')
+		'password': os.environ.get('DB_PSWRD')
 	}
 
 	@staticmethod
@@ -31,9 +31,9 @@ class TestingConfig(Config):
 	DB_CONFIG = {
 		'host': 'localhost',
 		'port': 3306,
-		'db': None,
+		'database': None,
 		'user': os.environ.get('DB_TEST_USER'),
-		'pswrd': os.environ.get('DB_TEST_PSWRD')
+		'password': os.environ.get('DB_TEST_PSWRD')
 	}
 
 
@@ -41,9 +41,9 @@ class LocalConfig(DevelopmentConfig):
 	DB_CONFIG = {
 		'host': 'localhost',
 		'port': 3306,
-		'db': 'reviews_db',
+		'database': 'reviews_db',
 		'user': os.environ.get('DB_LOCAL_USER'),
-		'pswrd': os.environ.get('DB_LOCAL_PSWRD')
+		'password': os.environ.get('DB_LOCAL_PSWRD')
 	}
 
 
@@ -69,11 +69,18 @@ class DockerConfig(ProductionConfig):
 		app.logger.addHandler(file_handler)
 
 
+class AzureConfig(ProductionConfig):
+	@classmethod
+	def init_app(cls, app):
+		ProductionConfig.init_app(app)
+
+
 config = {
 	'development': DevelopmentConfig,
 	'testing': TestingConfig,
 	'production': ProductionConfig,
 	'docker': DockerConfig,
+	'azure': AzureConfig,
 	'local': LocalConfig,
 
 	'default': DevelopmentConfig

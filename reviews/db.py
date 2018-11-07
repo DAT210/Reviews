@@ -17,13 +17,7 @@ def get_db():
 	"""
 
 	if not hasattr(g, '_database'):
-		g._database = mysql.connector.connect(
-			host=current_app.config['DB_CONFIG']['host'],
-			user=current_app.config['DB_CONFIG']['user'],
-			password=current_app.config['DB_CONFIG']['pswrd'],
-			database=current_app.config['DB_CONFIG']['db'],
-			port=current_app.config['DB_CONFIG']['port']
-		)
+		g._database = mysql.connector.connect(**current_app.config['DB_CONFIG'])
 
 	return g._database
 
@@ -52,7 +46,7 @@ def teardown_db(error):
 @with_appcontext
 def build_db(host, user, pswrd):
 	click.echo(f"Database initializing @{host}...")
-	current_app.config['DB_CONFIG'].update({'db': None})
+	current_app.config['DB_CONFIG'].update({'database': None})
 
 	for filename in os.listdir('./db/local'):
 		filename = os.path.join('./db/local', filename)
@@ -93,5 +87,5 @@ def build_db(host, user, pswrd):
 			return
 		finally:
 			cursor.close()
-			current_app.config['DB_CONFIG'].update({'db': 'reviews_db'})
+			current_app.config['DB_CONFIG'].update({'database': 'reviews_db'})
 	click.echo('Database initialized!')
