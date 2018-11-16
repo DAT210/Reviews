@@ -5,5 +5,6 @@ variables:
   image: 'reviews'
   latestTag: '$(image):1.0'
 
-
-- script: docker-compose up --build
+steps:
+  - script: |
+      docker-compose up --build
