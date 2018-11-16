@@ -1,0 +1,9 @@
+pool:
+  vmImage: 'ubuntu-16.04'
+
+variables:
+  image: 'reviews'
+  latestTag: '$(image):1.0'
+
+
+- script: docker-compose up --build
