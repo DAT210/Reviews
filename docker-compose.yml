@@ -29,7 +29,7 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PSWRD}
     ports:
-      - "3306:3306"
+      - "{DB_OPORT}:3306"
     #networks: 
     #  - backend
 
