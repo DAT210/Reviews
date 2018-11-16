@@ -1,6 +1,5 @@
 FROM mysql/mysql-server:8.0.13-1.1.8
 
 ADD ./db/init/ /docker-entrypoint-initdb.d
-COPY .env ./
 
 EXPOSE 3306

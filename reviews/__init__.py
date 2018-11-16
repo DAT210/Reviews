@@ -25,6 +25,7 @@ def create_app(config_type='default'):
 	# Add configurations:
 	app.config.from_object(config[config_type])
 	config[config_type].init_app(app)
+	app.logger.info("Application is in '%s' mode." % config_type)
 
 	# Creates an instance folder.
 	try:
