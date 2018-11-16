@@ -34,21 +34,6 @@ services:
     networks: 
       - backend
 
-  frontend:
-    container_name: front_end
-    restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile-front
-    ports: 
-      - 4400:80
-    links:
-      - api:review_api
-    command: flask run -h 0.0.0.0 -p 80
-    networks:
-      - backend
-
-
 networks:
   backend:
     driver: bridge
