@@ -3,6 +3,7 @@ FROM python:3.7-alpine
 LABEL maintainer="Group-3 - Reviews"
 
 WORKDIR /home/reviews
+COPY .env ./
 COPY requirements.txt ./
 COPY reviews reviews
 COPY app.py config.py app.py ./
