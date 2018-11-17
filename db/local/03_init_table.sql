@@ -13,6 +13,8 @@ CREATE TABLE func.increment_table (
   UNIQUE KEY `main_id_UNIQUE` (`table_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+USE reviews_db;
+
 CREATE TABLE reviews_db.review_comments (
   comment_id BIT(64) NOT NULL default 0,
   meal_id varchar(20) NOT NULL,
@@ -30,8 +32,8 @@ FOR EACH ROW
 BEGIN
 	SET new.comment_id = func.next_id();
     UPDATE func.increment_table SET increment = increment + 1 WHERE table_id='review_comments';
-END//
-DELIMITER ;
+END
+DELIMITER //
 
 -- Creates the reviews table for meals:
 CREATE TABLE reviews_db.review_ratings (

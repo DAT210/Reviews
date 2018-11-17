@@ -13,11 +13,10 @@ services:
       - mysql
     ports:
       - "4500:80" # Exposes the internal port 80 to external port 4500, remove external port in production.
-    networks:
-      - backend
+    #networks:
+    #  - backend
     links: 
        - mysql:dbserver
-    command: flask run -h 0.0.0.0 -p 80
 
   mysql:
     container_name: review_mysql
@@ -30,27 +29,12 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PSWRD}
     ports:
-      - "3306:3306"
-    networks: 
-      - backend
+      - "63306:3306"
+    #networks: 
+    #  - backend
 
-  frontend:
-    container_name: front_end
-    restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile-front
-    ports: 
-      - 4400:80
-    links:
-      - api:review_api
-    command: flask run -h 0.0.0.0 -p 80
-    networks:
-      - backend
-
-
-networks:
-  backend:
-    driver: bridge
-    name: backend_net
+#networks:
+#  backend:
+#    driver: bridge
+#    name: backend_net
     
