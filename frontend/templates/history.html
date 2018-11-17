@@ -6,10 +6,6 @@
     <title>Order history</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-
     <link rel="stylesheet" href="{{url_for('static' , filename='css/reviews.css')}}">
 </head>
 <body>
@@ -23,31 +19,35 @@
     {% endif %}
     {% endwith %}
     <h1>Listing previous orders</h1>
-    <table class="table">
+    <table class=" table table-bordered">
         <thead class="thead-dark">
             <tr>
                 <th>Order ID</th>
+                <th>Date</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody> 
             {% for order in previous_orders %}
             <tr>
                 <td>
-                    <button class="dropbtn" id="dropbtn-{{ loop.index }}">{{order.OrderID}}</button></td>
+                    <button class="dropbtn" id="dropbtn-{{ loop.index }}">{{order.OrderID}}</button>
                 </td>
+                <td>{{order.OrderTime}}</td>
             </tr>
             
             <tr>
                 <td id="myDropdown-{{ loop.index }}" class="dropdown-content">
                         {% for meal in order.meals %}
-                        <a href={{url_for('reviews.show_form', meal_id=CourseID)}}>{{meal.CourseID}} - {{meal.CourseName}}</a>
+                        <a href={{url_for('reviews.show_form', meal_id=meal.CourseID)}}>{{meal.CourseID}} - {{meal.CourseName}}</a>
                         {% endfor %}
                 </td>
             </tr>
             {% endfor %}
         </tbody>
-</table>
-            
+    </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>   
+    <script src="{{ url_for('static', filename='js/reviews.js') }}"></script>
 </body>
-<script src="{{ url_for('static', filename='js/reviews.js') }}"></script>
 </html>

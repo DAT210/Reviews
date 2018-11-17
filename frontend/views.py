@@ -12,7 +12,6 @@ from frontend.forms import ReviewForm
 bp = Blueprint(
 	'reviews', __name__, url_prefix='/reviews', template_folder='templates')
 
-
 @bp.route("/history/<string:customer_id>/", methods=['GET'])
 def show_history(customer_id):
 
@@ -20,7 +19,7 @@ def show_history(customer_id):
 		response_orders = requests.api.get(f"http://python-api:80/orders/api/customerorders/{customer_id}", timeout=30.0)
 	except:
 		flash("The server couldn't reach the API.", category='info')
-		return redirect(url_for('reviews.reviews')), 500
+		return redirect(url_for('reviews.reviews')), 500 # TODO: fix redirect
 	if response_orders.status_code is 200:
 		try:
 			previous_orders = response_orders.json()
@@ -46,7 +45,8 @@ def show_history(customer_id):
 
 @bp.route('/hello/', methods=['GET', 'POST'])
 def reviews():
-	return "Hello, Reviews!"
+	return "Hello, Reviews! 500 ERROR"
+
 
 @bp.route("/<string:meal_id>/", methods=['POST', 'GET'])
 def show_form(meal_id):
@@ -61,7 +61,6 @@ def show_form(meal_id):
 				return redirect(url_for('reviews.show_form', meal_id=meal_id))
 			comment_len = len(form.comments.data)
 			if 4 > comment_len or comment_len > 255:
-				# Set the flash category as a bootstrap alert class to colour it.
 				flash("The comment must be between 4 and 255 characters.", category='warning')
 				return redirect(url_for('reviews.show_form', meal_id=meal_id))
 			payload = {
@@ -82,7 +81,7 @@ def show_form(meal_id):
 				return str(err.msg) # TODO: Fix return.
 			if status == 'success':
 				flash('The review has successfully been added!', category='success')
-				return redirect(url_for("reviews.show_history", customer_id="1"))
+				return redirect(url_for("reviews.show_history", customer_id="100"))
 		flash("The form couldn't be validated.", category='warning')	
 		return redirect(url_for('reviews.show_form', meal_id=meal_id))
 	try:
@@ -92,7 +91,44 @@ def show_form(meal_id):
 		return redirect(url_for('reviews.show_form', meal_id=meal_id)), 500
 	if response.status_code is 200:
 		review = response.json()['data']['review']
-		return render_template("review.html", form=form, review=review)
+		current_app.logger.info(review)
+		return render_template("set_review.html", form=form, review=review)
 	else:
 		return redirect(url_for('reviews.show_form', meal_id=meal_id))
+
+
+@bp.route("/list/", methods=['GET'])
+def list_all():
+	try:
+		response = requests.api.get(f"http://review_api:80/api/1.0/reviews/", timeout=30.0)
+	except:
+		flash("The server couldn't reach the API.", category='info')
+		return redirect(url_for('reviews.reviews')), 500 #TODO:fix redirect
+	if response.status_code is 200:
+		try: 
+			all_reviews = response.json()['data']['reviews']
+		except json.decoder.JSONDecodeError as err:
+			return str(err.msg) # TODO: Fix return.
+		current_app.logger.info(all_reviews)
+		return render_template('list_reviews.html', all_reviews=all_reviews)
+	else:
+		return "wrong"
+
+
+@bp.route("/list/<string:meal_id>/", methods=['GET'])
+def show_review(meal_id):
+	try:
+		response = requests.api.get(f"http://review_api:80/api/1.0/reviews/{meal_id}/", timeout=30.0)
+	except:
+		flash("The server couldn't reach the API.", category='info')
+		return redirect(url_for('reviews.reviews')), 500 #TODO:fix redirect
+	if response.status_code is 200:
+		try: 
+			the_review = response.json()['data']['review']
+		except json.decoder.JSONDecodeError as err:
+			return str(err.msg) # TODO: Fix return.
+		current_app.logger.info(the_review)
+		return render_template('show_review.html', the_review=the_review)
+	else:
+		return "wrong"
 

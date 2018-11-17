@@ -52,11 +52,6 @@ h1 { font-size: 1.5em; margin: 10px; }
   top: 200px;
 }
 
-.jumbotron{
-  height: 1000px;
-}
-
-
 
 
 .dropbtn {
@@ -88,4 +83,8 @@ h1 { font-size: 1.5em; margin: 10px; }
 }
 
 .show {display: block;}
+
+#ratingInComment{
+  color: #b8860b
+}
 
