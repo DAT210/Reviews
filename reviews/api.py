@@ -61,7 +61,7 @@ def get_review(meal_id):
 @bp.route('/reviews/', methods=['GET'])
 def get_reviews():
 	reviews = Rating.pull()
-	if reviews is None:
+	if not reviews:
 		raise APIError("There are no reviews.", status_code=404, type='Not Found')
 	replies = []
 	for (meal_id, meal_name, rating,) in reviews:
@@ -74,7 +74,7 @@ def get_reviews():
 				comments_reply.append(api_tmpl.comment(c_rating, comment))
 		replies.append(
 			api_tmpl.get_datas(meal_id, meal_name, rating, comments_reply))
-		reply = api_tmpl.standard('success', {'reviews': replies})
+	reply = api_tmpl.standard('success', {'reviews': replies})
 	return make_response(jsonify(reply)), 200
 
 
