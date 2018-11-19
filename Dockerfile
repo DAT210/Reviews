@@ -4,6 +4,7 @@ LABEL maintainer="Group-3 - Reviews"
 
 WORKDIR /home/reviews
 COPY requirements.txt ./
+COPY .env ./
 COPY reviews reviews
 COPY app.py config.py app.py ./
 
