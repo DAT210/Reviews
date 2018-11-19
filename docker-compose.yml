@@ -13,8 +13,8 @@ services:
       - mysql
     ports:
       - "4500:80" # Exposes the internal port 80 to external port 4500, remove external port in production.
-    #networks:
-    #  - backend
+    networks:
+      - backend
     links: 
        - mysql:dbserver
 
@@ -30,11 +30,11 @@ services:
       MYSQL_PASSWORD: ${DB_PSWRD}
     ports:
       - "63306:3306"
-    #networks: 
-    #  - backend
+    networks: 
+      - backend
 
-#networks:
-#  backend:
-#    driver: bridge
-#    name: backend_net
+networks:
+  backend:
+    driver: bridge
+    name: backend_net
     
