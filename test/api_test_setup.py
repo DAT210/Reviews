@@ -6,6 +6,16 @@ from reviews.db import get_db, mysql
 import unittest
 import logging
 
+# A dict of test cases
+test_cases = {
+	'reviews': [
+		("id", "name"),
+	],
+	'comments': [
+		("id", "rating", "comment"),
+	]
+}
+
 
 class APITest(unittest.TestCase):
 	initialized = False
@@ -47,7 +57,6 @@ class APITest(unittest.TestCase):
 			except mysql.connector.Error as err:
 				print(f"Failed initializing test database...")
 				print(f"Error_testDBbuild: {err}")
-				return
 			else:
 				print(f"Test database initialized!")
 			finally:
@@ -66,7 +75,7 @@ class APITest(unittest.TestCase):
 			url = f"api/1.0/reviews/{id}"
 		return self.client.get(url, follow_redirects=True)
 
-	def api_set(self, id, data, content_type='application/json'):
+	def api_set(self, data, id=None, content_type='application/json'):
 		return self.client.patch(
 			"/api/1.0/reviews/", data=data, content_type=content_type,
 			follow_redirects=True
