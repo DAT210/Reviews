@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='reviews',
-    version='1.0.0',
+    version='1.0.1',
     maintainer='Group 3 - Ole & Tien',
     description='The review API built with the flask framework.',
     packages=find_packages(),
