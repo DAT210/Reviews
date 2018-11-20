@@ -48,8 +48,8 @@ def get_review(meal_id):
 		comments_reply = []
 		for (c_rating, comment,) in comments:
 			comments_reply.append(api_tmpl.comment(c_rating, comment))
-	(name, rating, ratings_1, ratings_2, ratings_3, ratings_4, ratings_5
-		) = ratings
+	(name, rating, ratings_1, ratings_2,
+		ratings_3, ratings_4, ratings_5) = ratings
 	reply = api_tmpl.get_data(
 		meal_id, name, rating, ratings_1, ratings_2,
 		ratings_3, ratings_4, ratings_5, comments_reply
@@ -131,14 +131,18 @@ def add_review():
 	if not request.is_json:
 		raise APIError(
 			"The request must be in json format.", status_code=400, type='Bad Request')
-
 	if 'data' not in request.get_json():
 		raise APIError(
 			"The json request is missing the field 'data',\
 			read the documentation for the correct format.",
 			status_code=400, type='Bad Request')
-
-	check = Rating.add(request.get_json()['data'])
+	new_meals = request.get_json()['data']
+	if not isinstance(new_meals, list):
+		raise APIError(
+			"The data contained in the `data` field of the request is not an array/list,\
+			read the documentation for the correct format.",
+			status_code=400, type="Bad Request")
+	check = Rating.add(new_meals)
 	if isinstance(check, Exception):
 		raise APIError(str(check), status_code=409, type='Conflict')
 	reply = api_tmpl.standard('success', None)
