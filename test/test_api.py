@@ -1,13 +1,24 @@
 '''Testing of the RestfulAPI - Flask'''
 
-from .api_test_setup import APITest
+from reviews.db import get_db
+from .api_test_setup import APITest, test_cases, mysql
 import json
+import time
 
 
 class TestAPI(APITest):
-
-	def setUp(self):
-		self_id = self.__str__().split(" ")[0]
+	def setUps(self):
+		with self.app_context:
+			db = mysql.connector.connect(**self.app.config['DB_CONFIG'])
+			cursor = db.cursor()
+			print("TEST")
+			try:
+				query = "TRUNCATE review_ratings;"
+				cursor.execute(query)
+			except mysql.connector.Error as err:
+				exit
+			finally:
+				cursor.close()
 
 	def test_get_test(self):
 		response = self.client.get("/api/1.0/test/")
@@ -30,8 +41,8 @@ class TestAPI(APITest):
 		"""Will the id be added in the given format?"""
 		request = json.dumps({
 			'data': [
-				{'id': "test_01", 'name': "First Test"},
-				{'id': "test_02", 'name': "Second Test"}
+				{'id': "test_add_01", 'name': "First Test"},
+				{'id': "test_add_02", 'name': "Second Test"}
 			]
 		})
 		response = self.api_add(request)
@@ -41,7 +52,7 @@ class TestAPI(APITest):
 	def test_add_400(self):
 		"""Will the id be added in the given format?"""
 		request = json.dumps({
-			'data': {'id': "test_01", 'name': "First Test"}
+			'data': {'id': "test_add_03", 'name': "First Test"}
 		})
 		response = self.api_add(request)
 		self.assertEqual(response.status_code, 400)
@@ -50,14 +61,30 @@ class TestAPI(APITest):
 	def test_add_409(self):
 		"""Will the new meals be added in the given format?"""
 		request = json.dumps({
-			'data': [{'di': "test_01", 'name': "First Test"}]
+			'data': [{'di': "test_add_04", 'name': "First Test"}]
 		})
+		response = self.api_add(request)
+		self.assertEqual(response.status_code, 409)
+		self.assertEqual(response.get_json()['status'], "error")
+
+	def test_add_409_exists(self):
+		"""Will an already existing id be added?"""
+		request = json.dumps({
+			'data': [{'id': "test_add_05", 'name': "Second Test"}]
+		})
+		response = self.api_add(request)
+		self.assertEqual(response.status_code, 201)
 		response = self.api_add(request)
 		self.assertEqual(response.status_code, 409)
 		self.assertEqual(response.get_json()['status'], "error")
 
 	def test_set_200(self):
 		"""Will the rating be set for the meal in the given format?"""
+		request = json.dumps({
+			'data': [{'id': "test_set_01", 'name': "First Test"}]
+		})
+		response = self.api_add(request)
+		self.assertEqual(response.status_code, 201)
 		request = json.dumps({'data': {
 			'id': "test_set_01", 'rating': 4, 'comment': "First set rated good."}
 		})
@@ -104,13 +131,18 @@ class TestAPI(APITest):
 		response = self.api_set(request)
 		self.assertEqual(response.status_code, 400)
 		request = json.dumps({'data': {
-			'id': "test_set_04", 'id': 3, 'comments': "It's not plural..."
+			'id': "test_set_04", 'ids': 3, 'comments': "It's not plural..."
 		}})
 		response = self.api_set(request)
 		self.assertEqual(response.status_code, 400)
 
 	def test_get_200(self):
 		"""Will information about the given id be retrieved?"""
+		request = json.dumps({
+			'data': [{'id': "test_get_01", 'name': "First Test"}]
+		})
+		response = self.api_add(request)
+		self.assertEqual(response.status_code, 201)
 		response = self.api_get('test_get_01')
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.get_json()['status'], "success")
@@ -123,18 +155,29 @@ class TestAPI(APITest):
 
 	def test_pull_200(self):
 		"""Will information about ratings be pulled?"""
+		request = json.dumps({
+			'data': [{'id': "test_pull_01", 'name': "First Test"}]
+		})
+		response = self.api_add(request)
+		self.assertEqual(response.status_code, 201)
 		response = self.api_get()
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.get_json()['status'], "success")
 
 	def test_pull_404(self):
 		"""What if there are no meals in database?"""
+		self.setUps()
 		response = self.api_get()
 		self.assertEqual(response.status_code, 404)
 		self.assertEqual(response.get_json()['status'], "error")
 
 	def test_delete_200(self):
 		"""Will the entry of the given id be deleted?"""
+		request = json.dumps({
+			'data': [{'id': "test_delete_01", 'name': "First Test"}]
+		})
+		response = self.api_add(request)
+		self.assertEqual(response.status_code, 201)
 		response = self.api_delete('test_delete_01')
 		self.assertEqual(response.status_code, 200)
 		self.assertEqual(response.get_json()['status'], "success")

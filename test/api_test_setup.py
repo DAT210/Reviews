@@ -8,11 +8,17 @@ import logging
 
 # A dict of test cases
 test_cases = {
-	'reviews': [
-		("id", "name"),
+	'test_set_200': [
+		("test_set_01", "Set Test 01"),
 	],
-	'comments': [
-		("id", "rating", "comment"),
+	'test_pull_200': [
+		("test_pull_01", "Pull Test 01"),
+	],
+	'test_get_200': [
+		("test_get_01", "Get Test 01"),
+	],
+	'test_delete_200': [
+		("test_delete_01", "Delete Test 01"),
 	]
 }
 
@@ -31,7 +37,8 @@ class APITest(unittest.TestCase):
 	def tearDownClass(cls):
 		print(f"Shutting down API test...")
 		with cls.app_context:
-			db = get_db()
+			cls.app.config['DB_CONFIG']['database'] = None
+			db = mysql.connector.connect(**cls.app.config['DB_CONFIG'])
 			cursor = db.cursor()
 			try:
 				cursor.execute("DROP DATABASE IF EXISTS reviews_test;")

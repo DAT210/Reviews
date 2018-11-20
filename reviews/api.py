@@ -48,8 +48,8 @@ def get_review(meal_id):
 		comments_reply = []
 		for (c_rating, comment,) in comments:
 			comments_reply.append(api_tmpl.comment(c_rating, comment))
-	(name, rating, ratings_1, ratings_2, ratings_3, ratings_4, ratings_5
-		) = ratings
+	(name, rating, ratings_1, ratings_2,
+		ratings_3, ratings_4, ratings_5) = ratings
 	reply = api_tmpl.get_data(
 		meal_id, name, rating, ratings_1, ratings_2,
 		ratings_3, ratings_4, ratings_5, comments_reply
