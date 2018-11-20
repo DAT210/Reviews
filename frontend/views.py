@@ -8,13 +8,24 @@ import requests
 import json
 from random import randint
 from frontend.forms import ReviewForm
+from frontend.customer import get_cid, get_headers
 
 bp = Blueprint(
 	'reviews', __name__, url_prefix='/reviews', template_folder='templates')
 
+@bp.route("/testhistbtn/", methods=['GET'])
+def test_hist_btn():
+	return render_template("testhistbtn.html")
+
+
+@bp.route("/historybutton/", methods=['GET'])
+def history_button():
+	correct_cid = get_cid()
+	return redirect(url_for("reviews.show_history", customer_id = correct_cid)) 
+
+
 @bp.route("/history/<string:customer_id>/", methods=['GET'])
 def show_history(customer_id):
-
 	try:
 		response_orders = requests.api.get(f"http://python-api:80/orders/api/customerorders/{customer_id}", timeout=30.0)
 	except:
